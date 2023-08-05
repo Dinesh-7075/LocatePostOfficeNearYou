@@ -55,7 +55,7 @@ async function ShowData() {
   
    <nav>
         <div class="nav">
-          <h1>IP Address : <span id="IpAdd">127.0.01</span></h1>
+          <h1>IP Address : <span id="IpAdd">${IPAddress}</span></h1>
 
           <div class="information">
             <div class="lat">
