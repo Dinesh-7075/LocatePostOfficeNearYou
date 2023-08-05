@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Location founder</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- -------- Left box ---------- -->
+      <div class="left">
+        <h1>Post Office Application.</h1>
+        <p>
+          This Application Allows you to extract information about the nearest
+          Post Offices, based on your location.
+        </p>
+        <img src="./undraw_messenger_re_8bky 1.png" alt="" />
+      </div>
+      <!-- --------------------------- Right Box ----------------------------- -->
+      <div class="right">
+        <h1>Your Current IP Address is <span id="yourIp"></span></h1>
+        <button onclick="ShowData()">Get Started</button>
+      </div>
+    </div>
+
+    <div class="post" id="post">
+      <div class="dataDiv" id="dataDiv">
+        <!-- <nav>
+        <div class="nav">
+          <h1>IP Address : <span id="IpAdd">127.0.01</span></h1>
+
+          <div class="information">
+            <div class="lat">
+              <h1>Lat:</h1>
+              <h1>Long:</h1>
+            </div>
+            <div id="city">
+              <h1>City:</h1>
+              <h1>Region:</h1>
+            </div>
+            <div id="organisation">
+              <h1>Organisation:</h1>
+              <h1>Hostname:</h1>
+            </div>
+          </div>
+        </div>
+        <div class="map">
+          <h1>Your Current Location</h1>
+          <img
+            src="Screenshot.png"
+            alt=""
+            srcset=""
+          />
+        </div>
+      </nav> -->
+      </div>
+
+      <div class="about" id="about">
+        <div class="info-div" id="info-div">
+          <!-- <h1 id="info">More Information About You</h1>
+          <div class="about-info">
+            <h1>Time Zone:</h1>
+            <h1>Date And Time:</h1>
+            <h1>Pincode:</h1>
+            <h1>Message:</h1>
+              <h1> Number of pincode(s) found:</h1>
+          </div> -->
+        </div>
+
+        <!-- <div id="postalCard">
+          <div class="card">
+            <div class="name">Name</div>
+            <div class="Type">Branch Type</div>
+            <div class="status">Delivery Status</div>
+            <div class="dis">District</div>
+            <div class="div">Division</div>
+          </div>
+          <div class="card">
+            <div class="name">Name</div>
+            <div class="Type">Branch Type</div>
+            <div class="status">Delivery Status</div>
+            <div class="dis">District</div>
+            <div class="div">Division</div>
+          </div>
+          <div class="card">
+            <div class="name">Name</div>
+            <div class="Type">Branch Type</div>
+            <div class="status">Delivery Status</div>
+            <div class="dis">District</div>
+            <div class="div">Division</div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
