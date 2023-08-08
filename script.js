@@ -5,7 +5,7 @@ function getIP() {
     .then((response) => response.json())
     .then((data) => {
       ip_address = data.ip;
-
+      console.log(data);
       console.log("Your public IP address is:", ip_address);
       userIP.innerHTML = ip_address;
     })
@@ -22,16 +22,18 @@ const post = document.getElementById("post");
 const dataDiv = document.getElementById("dataDiv");
 const infoDiv = document.getElementById("info-div");
 var locationData;
+var IPAdressData;
 var postofficeData;
 
 var postalCard;
 
 async function ShowData() {
+
   container.style.display = "none";
   post.style.display = "block";
 
   var IPAddress;
-
+  
   await $.getJSON("https://api.ipify.org?format=json", function (data) {
     IPAddress = data.ip;
   });
@@ -39,6 +41,19 @@ async function ShowData() {
   console.log(IPAddress);
 
   await fetch(`https://ipinfo.io/${IPAddress}?token=c3a4be400e1f13`)
+  .then((response) => response.json())
+    .then((response) => (IPAdressData = response))
+    .catch(() => {
+      alert("Problem with fetching data");
+    });
+
+  console.log(IPAdressData);
+  var latLong = IPAdressData.loc.split(",");
+  var lat = latLong[0].trim();
+  var long = latLong[1].trim();
+  console.log(lat, long);
+
+  await fetch(`http://api.ipstack.com/${IPAddress}?access_key=e7c237e6062bd6c622f381d13fd094af`)
     .then((response) => response.json())
     .then((response) => (locationData = response))
     .catch(() => {
@@ -46,13 +61,8 @@ async function ShowData() {
     });
   console.log(locationData);
 
-  var lagLong = locationData.loc.split(",");
-  var lat = lagLong[0].trim();
-  var long = lagLong[1].trim();
-  console.log(lat, long);
   // Fetching Data for UserIP
   dataDiv.innerHTML += `
-  
    <nav>
         <div class="nav">
           <h1>IP Address : <span id="IpAdd">${IPAddress}</span></h1>
@@ -64,31 +74,32 @@ async function ShowData() {
             </div>
             <div id="city">
               <h1>City:${"  " + locationData.city}</h1>
-              <h1>Region:${"  " + locationData.region}</h1>
+              <h1>Region:${"  " + locationData.region_name}</h1>
             </div>
             <div id="organisation">
-              <h1>Organisation:${"  " + locationData.org}</h1>
-              <h1>Hostname:${"  "}Dinesh Reddy</h1>
+              <h1>Organisation:${"  " + IPAdressData.org}</h1>
+              <h1>Hostname: Dinesh Reddy <img src="${locationData.location.country_flag}" id="flag"></h1>
             </div>
           </div>
         </div>
         <div class="map">
           <h1>Your Current Location</h1>
-          <iframe
-          src="https://maps.google.com/maps?q=${lat}, ${long}&z=15&output=embed"
+          <iframe width="100%" height="400px" 
+          src="https://maps.google.com/maps?q=${locationData.latitude}, ${locationData.longitude}&z=15&output=embed"
           frameborder="0"
+          style="border: 0"
           id="mapFrame"
         ></iframe>
         </div>
       </nav>
   `;
 
-  // ------------Time and postal Addresh-------
+  // ------------Time and postal Adress-------
   let datetime_str = new Date().toLocaleString("en-US", {
-    timeZone: `${locationData.timezone}`,
+    timeZone: `${IPAdressData.timezone}`,
   });
 
-  await fetch(`https://api.postalpincode.in/pincode/${locationData.postal} `)
+  await fetch(`https://api.postalpincode.in/pincode/${locationData.zip} `)
     .then((res) => res.json())
     .then((res) => res[0])
     .then((res) => {
@@ -97,15 +108,15 @@ async function ShowData() {
       infoDiv.innerHTML += `
       <h1 id="info">More Information About You</h1>
           <div class="about-info">
-            <h1>Time Zone:${"  " + locationData.timezone}</h1>
+            <h1>Time Zone:${"  " + IPAdressData.timezone}</h1>
             <h1>Date And Time:${"  " + datetime_str}</h1>
-            <h1>Pincode:${"  " + locationData.postal}</h1>
+            <h1>Pincode:${"  " + locationData.zip}</h1>
               <h1> Message:${"  " + res.Message}</h1>
           </div>
        <div class="postOffice">
           <h1>Post Offices Near You</h1>
           <div class="box">
-            <input type="search" name="" id="searchBox" onkeyup="searchKey()"/>
+            <input placeholder="Search Post Offices Near you" type="search" name="" id="searchBox" onkeyup="searchKey()"/>
             <img src="Vector.png" alt="" />
           </div>
         </div>
@@ -143,7 +154,6 @@ function searchKey() {
   postalCard.innerHTML = "";
   var searchValue = document.getElementById("searchBox").value;
   // console.log(searchValue);
-
   var searchFilter = postofficeData.filter((item) => {
     var filterValue = JSON.stringify(item);
     return filterValue.toLowerCase().includes(searchValue.toLowerCase());
